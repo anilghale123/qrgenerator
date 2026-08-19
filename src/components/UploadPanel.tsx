@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FileDropzone } from '@/components/FileDropzone';
 import { ShareResult } from '@/components/ShareResult';
+import { compressPdfClient } from '@/lib/compress-client';
 import type { ApiError, CreateShareResponse } from '@/lib/types';
 import { validateUrl } from '@/lib/validation';
 
@@ -58,7 +59,10 @@ export function UploadPanel() {
         setError(tab === 'pdf' ? 'Choose a PDF first.' : 'Choose a photo first.');
         return;
       }
-      body.set('file', file);
+
+      // Compress PDFs before upload to stay under Vercel's 4.5 MB request limit
+      const fileToUpload = tab === 'pdf' ? await compressPdfClient(file) : file;
+      body.set('file', fileToUpload);
     }
 
     setSubmitting(true);
