@@ -1,0 +1,18 @@
+node_modules/
+.next/
+out/
+build/
+
+# Secrets. Ignore every .env variant, then re-admit the scrubbed template.
+# These are SHARED DEV credentials for accounts another project also uses, so a
+# leak here is a leak there too — the broad glob is deliberate.
+.env
+.env.*
+.env.example
+
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# pdf.js worker, copied from node_modules by scripts/sync-pdf-worker.mjs.
+public/pdf.worker.min.mjs
