@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PdfViewer from '@/components/PdfViewerClient';
 import { formatBytes } from '@/lib/config';
@@ -30,22 +29,14 @@ export default async function ViewPage({ params }: PageProps) {
     // max-w-3xl and generous touch targets: this page is reached by scanning a
     // QR code, so a phone is the primary target, not a fallback.
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-3 py-4 sm:px-4 sm:py-6">
-      <header className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium" title={record.originalName ?? undefined}>
-            {record.originalName ?? 'Shared link'}
-          </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Shared {record.createdAt.toLocaleDateString()}
-            {record.size ? ` · ${formatBytes(record.size)}` : ''}
-          </p>
-        </div>
-        <Link
-          href="/"
-          className="shrink-0 rounded-lg border border-slate-300 px-3 py-2 text-xs font-medium hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
-        >
-          Create your own
-        </Link>
+      <header>
+        <p className="truncate text-sm font-medium" title={record.originalName ?? undefined}>
+          {record.originalName ?? 'Shared link'}
+        </p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Shared {record.createdAt.toLocaleDateString()}
+          {record.size ? ` · ${formatBytes(record.size)}` : ''}
+        </p>
       </header>
 
       {record.type === 'PDF' ? (
