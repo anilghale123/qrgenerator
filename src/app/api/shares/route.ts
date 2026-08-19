@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { resolveSiteUrl } from '@/lib/config';
+import { compressPdf } from '@/lib/compress';
 import { createDocument, type DocumentRecord } from '@/lib/documents';
 import { newSlug } from '@/lib/ids';
 import { renderQrPngDataUrl } from '@/lib/qr';
@@ -90,7 +91,15 @@ export async function POST(request: Request) {
       return errorResponse(validated.error, status);
     }
 
-    const { bytes, mimeType, originalName, size } = validated.value;
+    let { bytes, mimeType, originalName, size } = validated.value;
+
+    // Compress PDFs before upload to reduce download time for viewers.
+    // Compression is best-effort: if it fails, the original is uploaded.
+    if (kind === 'PDF') {
+      bytes = await compressPdf(bytes);
+      size = bytes.byteLength;
+    }
+
     const stored = await putObject({ data: bytes, mimeType, keyHint: slug });
 
     try {
