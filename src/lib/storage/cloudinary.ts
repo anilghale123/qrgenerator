@@ -84,12 +84,8 @@ export async function putObject({ data, mimeType, keyHint }: PutObjectInput): Pr
         folder,
         public_id: publicId,
         resource_type: resourceType,
-        // Our slug is the identity of the asset; letting Cloudinary derive or
-        // uniquify a name would break the link between the DB row and the file.
         use_filename: false,
         unique_filename: false,
-        // Never silently replace an existing asset — a slug collision should
-        // surface as an error, not as one share quietly overwriting another.
         overwrite: false,
         access_mode: 'public',
         type: 'upload',

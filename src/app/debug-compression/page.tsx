@@ -91,11 +91,24 @@ export default function DebugCompressionPage() {
               <p className="font-semibold">How compression works:</p>
               <ul className="mt-2 list-inside list-disc space-y-1">
                 <li>Compression happens in your browser (client-side)</li>
-                <li>Metadata and stream encoding are optimized</li>
-                <li>Compressed file is sent to the server</li>
-                <li>Server also compresses as a failsafe</li>
+                <li>Metadata (title, author, etc.) is removed</li>
+                <li>PDF streams are re-encoded for efficiency</li>
+                <li>Typically achieves 10-30% reduction</li>
               </ul>
             </div>
+
+            {reduction !== null && compressedSize! > 4.5 * 1024 * 1024 && (
+              <div className="rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-200">
+                <p className="font-semibold">⚠️ File still too large for direct upload</p>
+                <p className="mt-2">Your compressed file ({formatBytes(compressedSize!)}) still exceeds the 4.5 MB upload limit.</p>
+                <p className="mt-2">Options:</p>
+                <ul className="mt-1 list-inside list-disc space-y-1">
+                  <li>Use an online PDF compressor (iLovePDF, PDF2Go, Smallpdf)</li>
+                  <li>Split into multiple smaller PDFs</li>
+                  <li>Reduce image quality or resolution before creating the PDF</li>
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>

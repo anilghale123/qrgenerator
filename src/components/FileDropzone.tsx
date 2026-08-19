@@ -147,12 +147,21 @@ export function FileDropzone({ kind, file, onSelect, onReject, disabled = false 
                     <span className="text-slate-600 dark:text-slate-400">Compressed:</span>
                     <span className="font-mono font-semibold">{formatBytes(compressedSize)}</span>
                   </div>
-                  <div className="flex justify-between rounded bg-green-100 px-2 py-1 text-green-900 dark:bg-green-900 dark:text-green-100">
+                  <div className={`flex justify-between rounded px-2 py-1 ${
+                    compressedSize > 4.5 * 1024 * 1024
+                      ? 'bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-100'
+                      : 'bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100'
+                  }`}>
                     <span>Reduction:</span>
                     <span className="font-semibold">
                       {((100 - (compressedSize / file.size) * 100).toFixed(1))}%
                     </span>
                   </div>
+                  {compressedSize > 4.5 * 1024 * 1024 && (
+                    <div className="rounded bg-amber-50 p-2 text-xs text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                      ⚠️ File still exceeds upload limit ({formatBytes(compressedSize)} &gt; 4.5 MB). Try a smaller PDF or use an online compressor before uploading.
+                    </div>
+                  )}
                 </>
               ) : null}
             </div>
